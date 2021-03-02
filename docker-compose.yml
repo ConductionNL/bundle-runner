@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  bundle-runner:
+    image: docker.io/conduction/bundle-runner:latest
+    privileged: true
+    build:
+      context: ./runner
+    environment:
+      - GITHUB_USERNAME=${GITHUB_USERNAME}
+      - GITHUB_PASSWORD=${GITHUB_PASSWORD}
+      - REPOSITORIES=${REPOSITORIES}
