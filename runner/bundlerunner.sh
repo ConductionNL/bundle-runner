@@ -37,19 +37,19 @@ run_docker() {
 }
 
 bundle_tasks() {
-	docker-compose exec php composer update conduction/commongroundbundle -T
+	docker-compose exec -T php composer update conduction/commongroundbundle
 	sleep 30
 
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/common_ground.yaml ./api/config/packages/
 	echo "copied common_ground.yaml"
 	
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/configmap.yaml ./api/helm/templates
-	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/helpers.tpl ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/_helpers.tpl ./api/helm/templates
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/php-deployment.yaml ./api/helm/templates
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/secrets.yaml ./api/helm/templates
 	echo "copied helm templates"
 
-	docker-compose exec php bin/console app:documentation:generate -T
+	docker-compose exec -T php bin/console app:documentation:generate
 	sleep 5 
 
 	cp ./api/documentation/.env .
@@ -60,10 +60,10 @@ bundle_tasks() {
 	docker-compose up -d
 	sleep 60
 
-	docker-compose exec php bin/console app:helm:update -T
+	docker-compose exec -T php bin/console app:helm:update
 	sleep 5
 
-	docker-compose exec php bin/console app:publiccode:update -T
+	docker-compose exec -T php bin/console app:publiccode:update
 
 	ln -s ./api/public/schema/publiccode.yaml ./publiccode.yaml
 	ln -s ./api/public/schema/openapi.yaml ./openapi.yaml
