@@ -42,6 +42,9 @@ bundle_tasks() {
 
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/common_ground.yaml ./api/config/packages/
 	echo "copied common_ground.yaml"
+
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/.bettercodehub.yaml ./api
+	echo "copied .bettercodehub.yaml"
 	
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/configmap.yaml ./api/helm/templates
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/_helpers.tpl ./api/helm/templates
@@ -52,8 +55,11 @@ bundle_tasks() {
 	docker-compose exec -T php bin/console app:documentation:generate
 	sleep 5 
 
-	cp ./api/documentation/.env .
-	echo "copied .env"
+	cp ./api/documentation/readme.md .
+	echo "copied readme.md"
+
+		cp ./api/documentation/helm/readme.md ./api/helm
+	echo "copied readme.md"
 
 	docker-compose down
 
@@ -84,7 +90,7 @@ git_update() {
 	cd $3
 	pwd >> ~/runner.log
 	git add --all
-	git commit -m 'Bundle update run'
+	git commit -m 'Readme update (badges + description)'
 	git push origin $2
 
 	export GITHUB_TOKEN=$GITHUB_PASSWORD
