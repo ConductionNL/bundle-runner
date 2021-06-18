@@ -37,7 +37,7 @@ run_docker() {
 }
 
 bundle_tasks() {
-	docker-compose exec -T php composer update conduction/commongroundbundle
+	docker-compose exec -T php composer req conduction/commongroundbundle:v2-dev
 	sleep 30
 
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/common_ground.yaml ./api/config/packages/
@@ -52,14 +52,24 @@ bundle_tasks() {
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/secrets.yaml ./api/helm/templates
 	echo "copied helm templates"
 
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/docker-entrypoint.sh ./api/docker/php
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/Dockerfile ./api
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/Dockerfile-nginx ./api
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/docker-compose.yml .
+	echo "copied docker stuff"
+
 	docker-compose exec -T php bin/console app:documentation:generate
 	sleep 5 
 
 	cp ./api/documentation/readme.md .
 	echo "copied readme.md"
 
-		cp ./api/documentation/helm/readme.md ./api/helm
+  cp ./api/documentation/helm/readme.md ./api/helm
 	echo "copied readme.md"
+
+	cp ./api/documentation/artifacthub-repo.yaml ./api/helm
+	cp ./api/documentation/values.schema.json ./api/helm
+	echo "copied helm metadata"
 
 	docker-compose down
 
@@ -101,6 +111,7 @@ run_update() {
 	local branch=$(get_repo $1 $2)
 	run_docker $2
 	bundle_tasks
+	run_docker $2
 	git_update $1 $branch $2
 	cd ..
 }
