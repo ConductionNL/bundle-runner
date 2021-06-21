@@ -50,6 +50,12 @@ bundle_tasks() {
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/_helpers.tpl ./api/helm/templates
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/php-deployment.yaml ./api/helm/templates
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/secrets.yaml ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/api-deployment.yaml ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/api-service.yaml ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/certificate.yaml ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/dependencies-secret.yaml.yaml ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/ingress.yaml ./api/helm/templates
+	cp ./api/vendor/conduction/commongroundbundle/Resources/views/helm/php-service.yaml ./api/helm/templates
 	echo "copied helm templates"
 
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/docker-entrypoint.sh ./api/docker/php
@@ -86,6 +92,9 @@ bundle_tasks() {
 
 	docker-compose down
 
+	rm api/helm/templates/varnish-deployment.yaml
+	rm api/helm/templates/varnish-service.yaml
+	rm api/helm/templates/api-loadbalancer.yaml
 	rm api/helm/*.tgz
 
 	docker-compose up -d
