@@ -40,6 +40,10 @@ bundle_tasks() {
 	docker-compose exec -T php composer req conduction/commongroundbundle:^2.*-dev
 	docker-compose exec -T php composer req symfony/asset:^5.1 symfony/console:5.1 symfony/dotenv:^5.1 symfony/framework-bundle:^5.1 symfony/property-access:^5.1 symfony/translation:^5.1 symfony/yaml:^5.1 phpdocumentor/reflection-docblock:^5.1
 	docker-compose exec -T php composer req --dev phpunit/phpunit:^9.3 phar-io/manifest:^2.0.1 phar-io/version:^3.0.1 phpunit/php-code-coverage:^9 symfony/phpunit-bridge:^5.1 phpspec/prophecy:^1.11.1 sebastian/global-state:^5.0
+
+	sed -i 's#5\.1\.\*#\^5\.1#g' api/composer.json
+	docker-compose exec -T php composer update
+
 	sleep 30
 
 	cp ./api/vendor/conduction/commongroundbundle/Resources/views/repo/common_ground.yaml ./api/config/packages/
@@ -104,9 +108,10 @@ bundle_tasks() {
 	rm api/helm/templates/varnish-deployment.yaml
 	rm api/helm/templates/varnish-service.yaml
 	rm api/helm/templates/api-loadbalancer.yaml
-	rm api/helm/*.tgz
+#	rm api/helm/*.tgz
 	docker run -t -v $(pwd)/api/helm:/app alpine/helm:3.2.1 dependency update /app
-	sed -i 's#^/\*.tgz#./\*.tgz#g' ./api/helm/.helmignore
+	sed -i 's#^./\*.tgz#/\*.tgz#g' ./api/helm/.helmignore
+
 
 	docker-compose up -d
 
