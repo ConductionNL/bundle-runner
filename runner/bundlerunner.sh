@@ -86,6 +86,8 @@ bundle_tasks() {
 #  cp ./api/documentation/helm/readme.md ./api/helm
 #	echo "copied readme.md"
 
+  cp ./api/documentation/.env .
+
 	cp ./api/documentation/artifacthub-repo.yaml ./api/helm
 	cp ./api/documentation/values.schema.json ./api/helm
 	echo "copied helm metadata"
