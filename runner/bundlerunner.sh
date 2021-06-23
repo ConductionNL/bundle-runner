@@ -42,7 +42,7 @@ bundle_tasks() {
 	docker-compose exec -T php composer req --dev phpunit/phpunit:^9.3 phar-io/manifest:^2.0.1 phar-io/version:^3.0.1 phpunit/php-code-coverage:^9 symfony/phpunit-bridge:^5.1 phpspec/prophecy:^1.11.1 sebastian/global-state:^5.0
 
 	sed -i 's#5\.1\.\*#\^5\.1#g' api/composer.json
-	docker-compose exec -T php composer update
+	docker-compose exec -T php composer update symfony/*
 
 	sleep 30
 
